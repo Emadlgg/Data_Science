@@ -1,0 +1,11 @@
+﻿Métrica,Antes,Después
+Registros,11891,11868
+Variables,18,23
+Valores faltantes (18 var. originales),4216,3903
+Variables con NA,17,6
+Duplicados exactos,0,0
+Posibles duplicados,No evaluado (sin normalizar),2525
+Variables con formato inconsistente,3,0
+Variables con tipo incorrecto,1,0
+Categorías inconsistentes,12,0
+Errores corregidos,0,51

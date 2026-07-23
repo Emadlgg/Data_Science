@@ -1,0 +1,52 @@
+﻿Variable,Problema,Transformación,Registros afectados,Justificación
+TODAS LAS COLUMNAS,Nombres inconsistentes,Normalización de nombres,18,Facilitar el acceso mediante pandas.
+CODIGO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+DISTRITO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+DEPARTAMENTO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+MUNICIPIO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+ESTABLECIMIENTO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+DIRECCION,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+TELEFONO,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+SUPERVISOR,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+DIRECTOR,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+NIVEL,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+SECTOR,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+AREA,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+STATUS,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+MODALIDAD,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+JORNADA,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+PLAN,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+DEPARTAMENTAL,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+ARCHIVO_ORIGEN,"Espacios iniciales, finales o múltiples",Eliminación de espacios innecesarios,0,Uniformar el formato sin alterar el contenido.
+CODIGO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+DISTRITO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+DEPARTAMENTO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+MUNICIPIO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+ESTABLECIMIENTO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+DIRECCION,Valores vacíos,Conversión a NaN,6,Representar correctamente los datos faltantes.
+TELEFONO,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+SUPERVISOR,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+DIRECTOR,Valores vacíos,Conversión a NaN,72,Representar correctamente los datos faltantes.
+NIVEL,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+SECTOR,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+AREA,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+STATUS,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+MODALIDAD,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+JORNADA,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+PLAN,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+DEPARTAMENTAL,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+ARCHIVO_ORIGEN,Valores vacíos,Conversión a NaN,0,Representar correctamente los datos faltantes.
+TELEFONO,Tipo incorrecto,Conversión a string,11891,Los teléfonos no deben tratarse como números.
+DATASET,Duplicados exactos,Identificación,0,Se identifican para su análisis posterior.
+TODAS LAS COLUMNAS,Filas de resumen vacías generadas por la exportación del portal,Eliminación de filas sin contenido real,23,Cada archivo Excel exportado por el MINEDUC agrega una fila de pie sin datos; no corresponde a ningún establecimiento y debe excluirse del análisis.
+DIRECCION,Uso inconsistente de mayúsculas/minúsculas,Conversión a mayúsculas,10,Unificar el formato de presentación del texto sin alterar su contenido.
+TELEFONO,Uso inconsistente de mayúsculas/minúsculas,Conversión a mayúsculas,1,Unificar el formato de presentación del texto sin alterar su contenido.
+TELEFONO,"Formatos heterogéneos: números múltiples separados por coma/guion/slash, texto (FAX, EXT), longitudes distintas a 8 dígitos","Se crea TELEFONO_NORMALIZADO (dígitos válidos de 8 cifras, separados por '; ') y TELEFONO_VALIDO (booleano)",10922,"Preservar el dato original y exponer una versión utilizable para análisis, sin descartar información."
+MUNICIPIO,Para DEPARTAMENTO = 'CIUDAD CAPITAL' el sitio del MINEDUC reporta el número de zona en el campo MUNICIPIO en lugar del municipio real,Se crea MUNICIPIO_LIMPIO = 'GUATEMALA' (único municipio de la Ciudad Capital) y ZONA_CIUDAD conserva el número de zona original,2161,"'Ciudad Capital' es en realidad el municipio de Guatemala subdividido en zonas administrativas, no en municipios; se preserva el detalle de zona sin perder el dato."
+MUNICIPIO,Valor fuera de dominio: 'PACHALUN',Reclasificado a 'PACHALUM',18,Error tipográfico de una letra respecto al municipio oficial de Quiché 'Pachalum'.
+MUNICIPIO,Valor fuera de dominio: 'SAN MIGUEL PANAM',Reclasificado a 'SAN MIGUEL PANAN',1,Error tipográfico respecto al municipio oficial de Suchitepéquez 'San Miguel Panán'.
+MUNICIPIO,Valor fuera de dominio: 'SAN JOSE ACATEMPA',Reclasificado a 'ATESCATEMPA',12,"'San José Acatempa' es una aldea del municipio de Atescatempa (Jutiapa), no un municipio; se reclasifica al municipio real."
+MUNICIPIO,Valor fuera de dominio: 'SIPACATE',Reclasificado a 'LA GOMERA',9,"'Sipacate' es una aldea/balneario del municipio de La Gomera (Escuintla), no un municipio; se reclasifica al municipio real."
+MUNICIPIO,352 valores únicos crudos vs 340 municipios oficiales: variantes no detectadas en el diagnóstico inicial,"Verificación cruzada contra catálogo oficial INE (22 departamentos, 340 municipios) con alias verificados para nombres cortos de uso común",4,Garantizar que el 100% de los registros pertenezcan a un municipio real y correspondan a su departamento.
+DATASET,Duplicados parciales: mismo establecimiento con variaciones de escritura o registrado más de una vez,"Detección con RapidFuzz (token_sort_ratio) agrupando por DEPARTAMENTO+MUNICIPIO; se marca POSIBLE_DUPLICADO=True cuando nombre >=92%, coincide dirección (>=70%) o teléfono, Y coincide JORNADA y PLAN",2525,"No se elimina ningún registro automáticamente: muchos pares corresponden a la misma institución que ofrece más de un programa u horario bajo códigos distintos, lo cual es válido. Se deja marcado para revisión manual, conforme lo solicita la guía."
+STATUS / JORNADA,Establecimientos con STATUS='ABIERTA' pero JORNADA='SIN JORNADA',Sin corrección automática; se documenta como limitación de la fuente,1037,No existe una regla confiable para inferir la jornada real sin acceder a información adicional del MINEDUC.

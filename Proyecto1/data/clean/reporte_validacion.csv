@@ -1,0 +1,10 @@
+﻿Prueba,Resultado,Detalle
+Sin registros duplicados exactos,OK,(duplicados: 0)
+Sin espacios al inicio/final en variables de texto,OK,(afectados: 0)
+Teléfonos válidos tienen formato de 8 dígitos,OK,(incorrectos: 0)
+Departamentos pertenecen al catálogo oficial,OK,
+Municipios (limpios) pertenecen al catálogo oficial,OK,
+Variables booleanas derivadas con tipo correcto,OK,
+Sin categorías duplicadas por escritura en variables clave,OK,
+Sin valores de MUNICIPIO fuera de dominio,OK,
+Sin filas completamente vacías,OK,
