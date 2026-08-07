@@ -2,7 +2,7 @@
 download_dataset.py
 
 Descarga automáticamente el dataset desde Google Drive
-si aún no existe en la carpeta data/dataset.
+si aún no existe en la carpeta dataset/.
 
 Uso
 -----
@@ -13,104 +13,109 @@ dataset_path = ensure_dataset()
 
 from pathlib import Path
 import zipfile
-
 import gdown
 
 
-# ======================================================
+# =====================================================
 # CONFIGURACIÓN
-# ======================================================
+# =====================================================
 
-URL = "https://drive.google.com/file/d/1HphszWjr2tD2asupYP0zpJZuolie7Ink/view?usp=sharing"
+# ID del archivo dataset.zip en Google Drive
+FILE_ID = "1HphszWjr2tD2asupYP0zpJZuolie7Ink"
+
+# URL de descarga
+URL = f"https://drive.google.com/uc?id={FILE_ID}"
 
 # Carpeta raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Carpeta data/
-DATA_DIR = BASE_DIR / "data"
+# Carpeta donde quedará el dataset
+DATASET_DIR = BASE_DIR / "dataset"
 
-# Ruta donde quedará el dataset
-DATASET_DIR = DATA_DIR / "dataset"
-
-# Archivo temporal
-ZIP_PATH = DATA_DIR / "dataset.zip"
+# Archivo ZIP temporal
+ZIP_PATH = BASE_DIR / "dataset.zip"
 
 
-# ======================================================
-# DESCARGA
-# ======================================================
+# =====================================================
+# DESCARGAR DATASET
+# =====================================================
 
 def download_dataset():
     """
     Descarga el dataset desde Google Drive y lo descomprime.
     """
 
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-
     print("Descargando dataset desde Google Drive...")
 
     gdown.download(
         url=URL,
         output=str(ZIP_PATH),
-        quiet=False,
-        fuzzy=True
+        quiet=False
     )
 
     print("Extrayendo dataset...")
 
     with zipfile.ZipFile(ZIP_PATH, "r") as zip_ref:
-        zip_ref.extractall(DATA_DIR)
+        zip_ref.extractall(BASE_DIR)
 
-    # Elimina el ZIP para no ocupar espacio
-    ZIP_PATH.unlink()
+    # Eliminar el ZIP descargado
+    if ZIP_PATH.exists():
+        ZIP_PATH.unlink()
 
     print("✅ Dataset descargado correctamente.\n")
 
 
-# ======================================================
-# VERIFICACIÓN
-# ======================================================
+# =====================================================
+# VERIFICAR DATASET
+# =====================================================
 
 def dataset_exists():
     """
-    Verifica que el dataset ya exista.
+    Verifica que el dataset exista y tenga la estructura esperada.
     """
 
     train = DATASET_DIR / "train"
     test = DATASET_DIR / "test"
 
     return (
-        train.exists()
+        DATASET_DIR.exists()
+        and train.exists()
         and test.exists()
         and any(train.iterdir())
         and any(test.iterdir())
     )
 
 
+# =====================================================
+# ASEGURAR DATASET
+# =====================================================
+
 def ensure_dataset():
     """
-    Garantiza que el dataset exista.
-
-    Si no existe, lo descarga automáticamente.
+    Si el dataset ya existe, lo utiliza.
+    En caso contrario, lo descarga automáticamente.
     """
 
     if dataset_exists():
-
         print("✅ Dataset encontrado.\n")
-
         return DATASET_DIR
 
     print("⚠️ Dataset no encontrado.\n")
 
     download_dataset()
 
+    # Verificar nuevamente
+    if not dataset_exists():
+        raise FileNotFoundError(
+            "El dataset no se encontró después de la descarga."
+        )
+
     return DATASET_DIR
 
 
-# ======================================================
+# =====================================================
 # EJECUCIÓN DIRECTA
-# ======================================================
+# =====================================================
 
 if __name__ == "__main__":
-
     ensure_dataset()
