@@ -1,42 +1,37 @@
-# Laboratorio 3 - Deep Learning: Reconocimiento de Lenguaje de Señas (ASL)
+# Laboratorio 3 - Deep Learning: reconocimiento de señas ASL
 
-Proyecto desarrollado para el curso **CC3084 - Data Science** de la Universidad del Valle de Guatemala.
-
-El objetivo del laboratorio es desarrollar y evaluar diferentes modelos de Machine Learning y Deep Learning capaces de clasificar imágenes correspondientes a letras del alfabeto del **Lenguaje de Señas Americano (ASL)**.
+Proyecto del curso **CC3084 - Data Science** de la Universidad del Valle de Guatemala.
 
 ## Integrantes
 
 - Milton Polanco
 - Osman de León
 
+## Objetivo
+
+El laboratorio compara modelos de aprendizaje automático y profundo para clasificar imágenes del alfabeto del Lenguaje de Señas Americano (ASL). Se trabajó con las 29 clases del conjunto: las letras A-Z y las categorías `del`, `nothing` y `space`.
+
 ## Dataset
 
-Se utiliza el dataset **ASL Alphabet**, compuesto por aproximadamente **87,000 imágenes** distribuidas en **29 clases**:
+Se utiliza [ASL Alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), con 87,000 imágenes de entrenamiento balanceadas: 3,000 imágenes JPEG RGB de 200 x 200 píxeles por clase. La carpeta de prueba oficial contiene 28 imágenes adicionales.
 
-- 26 letras del alfabeto (A-Z).
-- `space`
-- `del`
-- `nothing`
+El dataset no se guarda en Git por su tamaño. `src/download_dataset.py` comprueba si ya existe localmente y, si falta, descarga desde Google Drive una copia del archivo original de Kaggle. El enlace de Drive funciona como espejo para facilitar la reproducción del laboratorio; la fuente del conjunto sigue siendo Kaggle.
 
-Las imágenes originales tienen una resolución de **200 × 200 píxeles** y se encuentran en formato JPEG y espacio de color RGB.
-
-El dataset no se almacena directamente en el repositorio debido a su tamaño. El proyecto incluye un script que verifica si el dataset está disponible localmente y, en caso contrario, lo descarga automáticamente desde Google Drive.
-
-## Estructura del proyecto
+## Estructura
 
 ```text
 Lab-DeepLearning/
-│
-├── dataset/                       # Dataset descargado (ignorado por Git)
-│   ├── train/
-│   └── test/
-│
+├── dataset/                         # Se descarga al ejecutar; ignorado por Git
+│   ├── asl_alphabet_train/          # 29 carpetas de entrenamiento
+│   └── test/                        # 28 imágenes oficiales
 ├── notebooks/
-│   └── Lab_DeepLearning.ipynb    # Notebook principal
-│
+│   └── Lab_DeepLearning.ipynb      # Análisis, modelos y resultados
+├── own_images/
+│   ├── Milton Polanco/              # Cinco fotografías propias
+│   ├── Osman/                       # Cinco fotografías propias
+│   └── README.md
 ├── src/
-│   └── download_dataset.py       # Descarga automática del dataset
-│
+│   └── download_dataset.py         # Descarga y validación del dataset
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -47,11 +42,11 @@ Lab-DeepLearning/
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd Lab-DeepLearning
+git clone https://github.com/Emadlgg/Data_Science.git
+cd Data_Science/Lab-DeepLearning
 ```
 
-### 2. Crear un entorno virtual
+### 2. Crear y activar un entorno virtual
 
 ```bash
 python -m venv .venv
@@ -63,7 +58,7 @@ En Windows:
 .venv\Scripts\activate
 ```
 
-En Linux/macOS:
+En Linux o macOS:
 
 ```bash
 source .venv/bin/activate
@@ -72,102 +67,39 @@ source .venv/bin/activate
 ### 3. Instalar las dependencias
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Ejecución
 
-Abrir el archivo:
+Abra `notebooks/Lab_DeepLearning.ipynb` y ejecute todas las celdas en orden. La primera ejecución descargará y extraerá aproximadamente 1.1 GB si `dataset/` no existe. Las ejecuciones posteriores reutilizarán los archivos locales.
 
-```text
-notebooks/Lab_DeepLearning.ipynb
-```
+El notebook crea temporalmente `artifacts/models/` para guardar los modelos entrenados. Esa carpeta también está ignorada por Git porque se reconstruye al ejecutar el análisis completo.
 
-y ejecutar las celdas en orden.
+## Metodología
 
-La primera ejecución verifica automáticamente la existencia del dataset. Si la carpeta `dataset/` no se encuentra disponible, el archivo `src/download_dataset.py` descarga y extrae el dataset automáticamente.
+- Análisis de balance, formato, resolución, variabilidad interna y clases visualmente similares.
+- Submuestra estratificada de 500 imágenes por clase y división 70/15/15.
+- Redimensionamiento a 64 x 64, normalización y procesamiento por lotes.
+- Comparación de dos CNN, dos redes completamente conectadas y dos configuraciones de Random Forest.
+- Reentrenamiento de las dos CNN con rotación, traslación, zoom y contraste.
+- Selección por F1 macro de validación y análisis final en prueba.
+- Evaluación externa con cinco fotografías de letras distintas por cada integrante.
+- Discusión de cambio de dominio, accesibilidad, sesgo y limitaciones.
 
-Una vez descargado, las siguientes ejecuciones reutilizan los archivos locales y no realizan nuevamente la descarga.
+No se aplicó volteo horizontal durante el aumento de datos porque cambia la lateralidad de la seña. La validación y la prueba permanecieron sin transformaciones.
 
-## Análisis Exploratorio
+## Resultados
 
-Durante el análisis exploratorio se estudian diferentes características del conjunto de datos, incluyendo:
+La CNN mejorada sin aumento de datos fue la mejor configuración:
 
-- Distribución de las clases.
-- Cantidad de imágenes por clase.
-- Resolución y formato de las imágenes.
-- Variabilidad entre imágenes pertenecientes a una misma clase.
-- Similitudes visuales entre diferentes letras.
-- Estrategia de división de los datos.
+| Modelo | F1 macro de validación | F1 macro de prueba |
+|---|---:|---:|
+| CNN mejorada | 0.9807 | 0.9800 |
+| Random Forest sin límite de profundidad | 0.9613 | 0.9678 |
+| Red completamente conectada regularizada | 0.3810 | 0.3866 |
+| CNN base | 0.2043 | 0.2099 |
 
-## Preprocesamiento
+El aumento de datos no mejoró las CNN con el presupuesto de épocas utilizado. En las diez fotografías propias, el modelo acertó 3 de 10: 2 de 5 fotografías de Milton y 1 de 5 de Osman. Esta caída se analiza como cambio de dominio entre las imágenes controladas de Kaggle y fotografías tomadas con otras personas, cámaras, fondos y condiciones de iluminación.
 
-Antes del entrenamiento se plantea aplicar las siguientes transformaciones:
-
-- Redimensionamiento de imágenes de **200 × 200** a **64 × 64 píxeles**.
-- Normalización de los valores de los píxeles al intervalo `[0,1]`.
-- Procesamiento por lotes (*batching*).
-- División de los datos en entrenamiento, validación y prueba.
-
-## Modelos Propuestos
-
-Durante el desarrollo del laboratorio se evaluarán diferentes enfoques:
-
-1. **CNN Base**  
-   Red Neuronal Convolucional utilizada como modelo inicial de referencia.
-
-2. **CNN Mejorada**  
-   Arquitectura convolucional de mayor profundidad y capacidad.
-
-3. **Red Neuronal Fully Connected**  
-   Modelo utilizado para comparar una red neuronal tradicional frente a las CNN.
-
-4. **Modelo clásico de Machine Learning**  
-   Se evaluará un algoritmo tradicional como SVM, Random Forest o KNN.
-
-## Evaluación
-
-Los modelos serán comparados utilizando métricas de clasificación como:
-
-- Accuracy
-- Precision
-- Recall
-- F1-Score
-- Matriz de confusión
-
-Posteriormente, el modelo con mejor desempeño será evaluado utilizando imágenes de señas realizadas por los integrantes del grupo.
-
-## Tecnologías
-
-- Python
-- Jupyter Notebook
-- TensorFlow / Keras
-- Scikit-learn
-- NumPy
-- Pandas
-- Matplotlib
-- Pillow
-- gdown
-
-## Estado del proyecto
-
-### Avance
-
-- [x] Configuración del entorno
-- [x] Descarga automática del dataset
-- [x] Análisis exploratorio
-- [x] Preprocesamiento inicial
-- [x] Selección de modelos
-- [x] Plan de procesamiento de imágenes
-
-### Entrega final
-
-- [ ] Entrenamiento de CNN Base
-- [ ] Entrenamiento de CNN Mejorada
-- [ ] Entrenamiento de red Fully Connected
-- [ ] Entrenamiento de modelo clásico
-- [ ] Image Augmentation
-- [ ] Comparación de modelos
-- [ ] Evaluación con imágenes propias
-- [ ] Análisis de accesibilidad y sesgo
-- [ ] Conclusiones finales
+El resultado corresponde a un prototipo de clasificación de señas estáticas. No debe interpretarse como un traductor completo ni como un sistema listo para uso de accesibilidad.

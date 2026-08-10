@@ -13,6 +13,10 @@ venv/
 
 # Dataset
 dataset/
+dataset.zip
+
+# Modelos y resultados generados al ejecutar el notebook
+artifacts/
 
 # VS Code
 .vscode/
