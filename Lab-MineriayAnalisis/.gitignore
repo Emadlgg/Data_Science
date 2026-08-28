@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+.venv-1/
+
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# Modelos y resultados generados al ejecutar el notebook
+artifacts/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
